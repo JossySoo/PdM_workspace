@@ -1,4 +1,0 @@
-../Src/main.c:52:5:main	5
-../Src/main.c:108:6:LED_blink	1
-../Src/main.c:115:13:SystemClock_Config	4
-../Src/main.c:167:13:Error_Handler	1
