@@ -43,6 +43,8 @@ UART_HandleTypeDef UartHandle;
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 
+void LED_blink(Led_TypeDef led, uint32_t timeOn, uint32_t timeOff);
+
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -74,23 +76,24 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	  BSP_LED_On(LED1);
-	  HAL_Delay(TIMEoN);
-	  BSP_LED_Off(LED1);
-	  HAL_Delay(TIMEoFF);
-
-	  BSP_LED_On(LED2);
-	  HAL_Delay(TIMEoN);
-	  BSP_LED_Off(LED2);
-	  HAL_Delay(TIMEoFF);
-
-	  BSP_LED_On(LED3);
-	  HAL_Delay(TIMEoN);
-	  BSP_LED_Off(LED3);
-	  HAL_Delay(TIMEoFF);
+	  LED_blink(LED1,TIMEoN,TIMEoFF);
+	  LED_blink(LED2,TIMEoN,TIMEoFF);
+	  LED_blink(LED3,TIMEoN,TIMEoFF);
   }
 }
 
+/**
+ * @brief  Blink led 1 time
+ * @param led: can be LED1,LED2 or LED3
+ * @param timeOn: tiempo que permanece encendido
+ * @param timeOff: tiempo que permanece apagado
+ */
+void LED_blink(Led_TypeDef led, uint32_t timeOn, uint32_t timeOff){
+	  BSP_LED_On(led);
+	  HAL_Delay(timeOn);
+	  BSP_LED_Off(led);
+	  HAL_Delay(timeOff);
+}
 
 /**
   * @brief  System Clock Configuration
