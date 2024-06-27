@@ -35,6 +35,7 @@
 #define TIMEoFF 200
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+Led_TypeDef LED_secuence[] ={LED1,LED2,LED3};
 /* UART handler declaration */
 UART_HandleTypeDef UartHandle;
 
@@ -73,12 +74,16 @@ int main(void)
   BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_LED_Init(LED3);
+
+  const uint8_t MAXlED = sizeof(LED_secuence)/sizeof(Led_TypeDef);
+
   /* Infinite loop */
   while (1)
   {
-	  LED_blink(LED1,TIMEoN,TIMEoFF);
-	  LED_blink(LED2,TIMEoN,TIMEoFF);
-	  LED_blink(LED3,TIMEoN,TIMEoFF);
+	  uint8_t index;
+	  for(index=0;index<MAXlED;index++){
+		  LED_blink(LED_secuence[index],TIMEoN,TIMEoFF);
+	  }
   }
 }
 
