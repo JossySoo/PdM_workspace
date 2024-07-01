@@ -37,8 +37,6 @@ tick_t durationTime=100;
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 
-void LED_blink(Led_TypeDef led, uint32_t timeOn, uint32_t timeOff);
-
 /* Private functions ---------------------------------------------------------*/
 
 /**
