@@ -82,6 +82,13 @@ int main(void)
 
 /* Funciones para retardos no bloqueantes  */
 
+/**
+ * @brief  Esta función inicializa el delay, asignando la duración pero sin iniciar el conteo del tiempo.
+ * @param  delay_t * delay, puntero que indica el delay a inicializar
+ * @param  duration, tiempo de duración del delay
+ * @retval None
+ */
+
 void delayInit( delay_t * delay, tick_t duration ) {
 
 	*delay = (delay_t) {
@@ -91,6 +98,12 @@ void delayInit( delay_t * delay, tick_t duration ) {
 	};
 
 }
+
+/**
+ * @brief  Esta función inicializa el tiempo del conteo del delay y consulta si el tiempo de duración se cumplió
+ * @param  delay_t * delay, puntero que indica el delay a consultar
+ * @retval bool timeOut, indica si terminó el tiempo del delay o no
+ */
 
 bool_t delayRead( delay_t * delay ) {
 
@@ -117,6 +130,12 @@ bool_t delayRead( delay_t * delay ) {
 	return timeOut;
 
 }
+
+/**
+ * @brief  Esta función modifica el tiempo de duración de un delay
+ * @param  delay_t * delay, puntero que indica el delay a modificar
+ * @retval none
+ */
 
 void delayWrite( delay_t * delay, tick_t duration ) {
 
