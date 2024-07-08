@@ -27,8 +27,6 @@
 #include <stdbool.h> /* Necesaria para bool y true/false */
 #include "stm32f4xx_hal.h"  		/* <- HAL include */
 #include "stm32f4xx_nucleo_144.h" 	/* <- BSP include */
-#include "API_delay.h"
-
 
 
 /* Exported types ------------------------------------------------------------*/

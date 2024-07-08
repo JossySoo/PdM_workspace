@@ -18,8 +18,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef API_DELAY_H
+#define API_DELAY_H
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>

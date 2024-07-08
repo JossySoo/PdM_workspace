@@ -22,7 +22,7 @@
 #include "API_delay.h"
 
 /* Functions -----------------------------------------------------------------*/
-
+static void errorHandler(void);
 /**
  * @brief  This function initializes the delay, setting the duration but not starting the timer.
  * @param  delay_t * delay, pointer that indicates the delay to initialize
@@ -101,7 +101,7 @@ void delayWrite( delay_t * delay, tick_t duration ) {
  * @retval bool, indicates if the delay time has finished or not
  */
 
-void delayIsRunning(delay_t * delay) {
+bool_t delayIsRunning(delay_t * delay) {
 
 	if (delay == NULL){
 			errorHandler();
@@ -117,8 +117,7 @@ void delayIsRunning(delay_t * delay) {
  * @param  None
  * @retval None
  */
-static void errorHandler(void)
-{
+static void errorHandler(void){
 	/* Turn LED2 on */
 	BSP_LED_On(LED2);
 	while (1)

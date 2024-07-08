@@ -5,23 +5,23 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.c 
+../Drivers/API/Src/API_delay.c 
 
 OBJS += \
-./Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.o 
+./Drivers/API/Src/API_delay.o 
 
 C_DEPS += \
-./Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.d 
+./Drivers/API/Src/API_delay.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-Drivers/STM32F4xx_HAL_Driver/Src/Legacy/%.o Drivers/STM32F4xx_HAL_Driver/Src/Legacy/%.su Drivers/STM32F4xx_HAL_Driver/Src/Legacy/%.cyclo: ../Drivers/STM32F4xx_HAL_Driver/Src/Legacy/%.c Drivers/STM32F4xx_HAL_Driver/Src/Legacy/subdir.mk
+Drivers/API/Src/%.o Drivers/API/Src/%.su Drivers/API/Src/%.cyclo: ../Drivers/API/Src/%.c Drivers/API/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F429ZITx -DSTM32F4 -DNUCLEO_F429ZI -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Inc -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_3/Drivers/STM32F4xx_HAL_Driver/Inc" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_3/Drivers/CMSIS/Include" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_3/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_3/Drivers/BSP/STM32F4xx_Nucleo_144" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_3/Drivers/Core/Inc" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_3/Drivers/API/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
-clean: clean-Drivers-2f-STM32F4xx_HAL_Driver-2f-Src-2f-Legacy
+clean: clean-Drivers-2f-API-2f-Src
 
-clean-Drivers-2f-STM32F4xx_HAL_Driver-2f-Src-2f-Legacy:
-	-$(RM) ./Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.cyclo ./Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.d ./Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.o ./Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.su
+clean-Drivers-2f-API-2f-Src:
+	-$(RM) ./Drivers/API/Src/API_delay.cyclo ./Drivers/API/Src/API_delay.d ./Drivers/API/Src/API_delay.o ./Drivers/API/Src/API_delay.su
 
-.PHONY: clean-Drivers-2f-STM32F4xx_HAL_Driver-2f-Src-2f-Legacy
+.PHONY: clean-Drivers-2f-API-2f-Src
 

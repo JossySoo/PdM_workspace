@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "API_delay.h"
 /** @addtogroup STM32F4xx_HAL_Examples
  * @{
  */
@@ -29,7 +30,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 delay_t delay;
-tick_t durationTime=100;
+const uint32_t TIEMPOS[] = {500, 100, 100, 1000};
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -63,8 +64,11 @@ int main(void)
 	/* Initialize BSP Led for LED1 */
 	BSP_LED_Init(LED1);
 
+	uint8_t index = 0;
+	bool_t ledState = false;
+
 	/* Initialize delay */
-	delayInit(&delay,durationTime);
+	delayInit(&delay,TIEMPOS[index]);
 
 
 	/* Infinite loop */
@@ -72,6 +76,21 @@ int main(void)
 	  {
 		  if (delayRead(&delay)){
 			  BSP_LED_Toggle(LED1);
+			  ledState = !ledState;
+
+			  if (ledState==false){
+				  if (index+1 < sizeof(TIEMPOS) / sizeof(TIEMPOS[0])){
+					  index++;
+				  }else{
+					  index=0;
+				  }
+
+			  if(!delayIsRunning(&delay)){
+							delayWrite(&delay, TIEMPOS[index]);
+				  }
+
+			  }
+
 		  }
 	  }
 }
