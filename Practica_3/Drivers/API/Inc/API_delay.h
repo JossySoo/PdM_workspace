@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    UART/UART_Printf/Inc/main.h
+  * @file    UART/UART_Printf/Inc/API_delay.h
   * @author  MCD Application Team
   * @brief   Header for main.c module
   ******************************************************************************
@@ -85,6 +85,13 @@ bool_t delayRead(delay_t * delay);
  * @retval None
  */
 void delayWrite(delay_t * delay, tick_t duration);
+
+/**
+ * @brief  This function checks if the delay time has finished or not
+ * @param  delay_t * delay, pointer that indicates the delay to modify
+ * @retval bool, indicates if the delay time has finished or not
+ */
+bool_t delayIsRunning(delay_t * delay);
 
 #endif /* __MAIN_H */
 

@@ -95,6 +95,22 @@ void delayWrite( delay_t * delay, tick_t duration ) {
 
 }
 
+/**
+ * @brief  This function checks if the delay time has finished or not
+ * @param  delay_t * delay, pointer that indicates the delay to modify
+ * @retval bool, indicates if the delay time has finished or not
+ */
+
+void delayIsRunning(delay_t * delay) {
+
+	if (delay == NULL){
+			errorHandler();
+		}
+
+	return delay->running;
+
+}
+
 
 /**
  * @brief  This function is executed in case of error occurrence.
