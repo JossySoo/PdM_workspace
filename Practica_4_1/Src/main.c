@@ -103,12 +103,18 @@ int main(void)
 	}
 }
 
-/* Establece el estado inicial de la máquina de estados */
+/**
+ * @brief  Set the initial state of the state machine.
+ * @retval None
+ */
 void debounceFSM_init(){
 	buttonState = BUTTON_UP;
 }
 
-/* Verifica el estado del botón y actualiza el estado de la maquina de estados */
+/**
+ * @brief  Check the button state and update the state machine status.
+ * @retval None
+ */
 void debounceFSM_update(){
 	switch(buttonState){
 		case BUTTON_UP:
@@ -149,12 +155,19 @@ void debounceFSM_update(){
 	}
 }
 
-/* Enciende el LED1 */
+/**
+ * @brief  Turns on the led 1
+ * @retval None
+ */
 void buttonPressed(){
 	BSP_LED_On(LED1);
 }
 
-/* Apaga el LED1 */
+
+/**
+ * @brief  Turns off the led 1
+ * @retval None
+ */
 void buttonReleased(){
 	BSP_LED_Off(LED1);
 }
