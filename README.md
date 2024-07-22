@@ -15,3 +15,11 @@ Se crean funciones para generar y utilizar delays no bloqueantes y se utilizan p
 Se modulariza las funciones del delay no bloqueante y se crea una nueva función para validar si el delay está corriendo o no (delayIsRunning).
 
 Se implemente parpadeo de led con diferentes tiempos utilizando el nuevo módulo de delay.
+
+## Practica 4
+
+### Punto 1
+
+Se implementa una MEF anti-rebote que permita leer el estado del pulsador de la placa NUCLEO-F4 y generar acciones o eventos ante un flanco descendente o ascendente, de acuerdo al siguiente diagrama:
+
+![flujo antirebote](image.png)
