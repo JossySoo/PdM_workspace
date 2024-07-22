@@ -16,7 +16,7 @@ S_DEPS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 Startup/%.o: ../Startup/%.s Startup/subdir.mk
-	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Drivers/STM32F4xx_HAL_Driver/Inc" -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Drivers/CMSIS/Include" -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Drivers/BSP/STM32F4xx_Nucleo_144" -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Inc" -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Drivers/Core/Inc" -I"/home/felipe/Desktop/PdM_workspace/Practica 4.1/Drivers/API/Inc" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Drivers/STM32F4xx_HAL_Driver/Inc" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Drivers/CMSIS/Include" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Drivers/BSP/STM32F4xx_Nucleo_144" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Inc" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Drivers/Core/Inc" -I"D:/UBA/5_Programacion_microcontroladores/PdM_workspace/Practica_4_1/Drivers/API/Inc" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-Startup
 
