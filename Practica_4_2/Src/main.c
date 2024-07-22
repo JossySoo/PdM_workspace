@@ -35,9 +35,13 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+ static const tick_t TIEMPOS[]={100,500};
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+static delay_t ledDelay;
+static uint8_t delayIndex;
 
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
@@ -68,17 +72,32 @@ int main(void)
 
 	/* Initialize BSP Leds */
 	BSP_LED_Init(LED1);
-	BSP_LED_Init(LED2);
-	BSP_LED_Init(LED3);
 
 	BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
 	debounceFSM_init();
+
+	delayIndex = 0;
+
+	/* Initialize delays */
+	delayInit(&ledDelay,TIEMPOS[delayIndex]);
+
 	/* Infinite loop */
 	while (1){
 		debounceFSM_update();
 		if (readKey()){
-			BSP_LED_Toggle(LED3);
+			if (delayIndex+1 < sizeof(TIEMPOS) / sizeof(TIEMPOS[0])){
+				delayIndex++;
+			}else{
+				delayIndex=0;
+			}
+			delayWrite(&ledDelay, TIEMPOS[delayIndex]);
 		}
+
+	    if (delayRead(&ledDelay)){
+			BSP_LED_Toggle(LED1);
+
+	    }
+
 	}
 }
 
