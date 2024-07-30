@@ -1,62 +1,62 @@
 /**
-  ******************************************************************************
-  * @file    UART/UART_Printf/Src/main.c
-  * @author  MCD Application Team
-  * @brief   This example shows how to retarget the C library printf function
-  *          to the UART.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+ **************************
+ * @file    UART/UART_Printf/Src/main.c
+ * @author  MCD Application Team
+ * @brief   This example shows how to retarget the C library printf function
+ *          to the UART.
+ **************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ **************************
+ */
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "API_delay.h"
+#include "API_debounce.h"
+#include "API_uart.h"
+
 
 /** @addtogroup STM32F4xx_HAL_Examples
-  * @{
-  */
+ * @{
+ */
 
 /** @addtogroup UART_Printf
-  * @{
-  */
+ * @{
+ */
 
 /* Private typedef -----------------------------------------------------------*/
+
 /* Private define ------------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+ static const tick_t TIEMPOS[]={100,500};
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-/* UART handler declaration */
-UART_HandleTypeDef UartHandle;
+static delay_t ledDelay;
+static uint8_t delayIndex;
 
 /* Private function prototypes -----------------------------------------------*/
-#ifdef __GNUC__
-/* With GCC, small printf (option LD Linker->Libraries->Small printf
-   set to 'Yes') calls __io_putchar() */
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
 static void SystemClock_Config(void);
 static void Error_Handler(void);
-
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
+ * @brief  Main program
+ * @param  None
+ * @retval None
+ */
 int main(void)
 {
-  /* STM32F4xx HAL library initialization:
+	/* STM32F4xx HAL library initialization:
        - Configure the Flash prefetch
        - Systick timer is configured by default as source of time base, but user 
          can eventually implement his proper time base source (a general purpose 
@@ -65,65 +65,41 @@ int main(void)
          handled in milliseconds basis.
        - Set NVIC Group Priority to 4
        - Low Level Initialization
-     */
-  HAL_Init();
+	 */
+	HAL_Init();
 
-  /* Configure the system clock to 180 MHz */
-  SystemClock_Config();
+	/* Configure the system clock to 180 MHz */
+	SystemClock_Config();
 
-  /* Initialize BSP Led for LED2 and LED3*/
-  BSP_LED_Init(LED2);
-  BSP_LED_Init(LED3);
+	/* Initialize BSP Leds */
+	BSP_LED_Init(LED1);
 
+	BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
+	debounceFSM_init();
 
-  /*##-1- Configure the UART peripheral ######################################*/
-  /* Put the USART peripheral in the Asynchronous mode (UART Mode) */
-  /* UART configured as follows:
-      - Word Length = 8 Bits (7 data bit + 1 parity bit) : 
-	                  BE CAREFUL : Program 7 data bits + 1 parity bit in PC HyperTerminal
-      - Stop Bit    = One Stop bit
-      - Parity      = ODD parity
-      - BaudRate    = 9600 baud
-      - Hardware flow control disabled (RTS and CTS signals) */
-  UartHandle.Instance        = USARTx;
+	delayIndex = 0;
 
-  UartHandle.Init.BaudRate   = 9600;
-  UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
-  UartHandle.Init.StopBits   = UART_STOPBITS_1;
-  UartHandle.Init.Parity     = UART_PARITY_ODD;
-  UartHandle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
-  UartHandle.Init.Mode       = UART_MODE_TX_RX;
-  UartHandle.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&UartHandle) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
+	/* Initialize delays */
+	delayInit(&ledDelay,TIEMPOS[delayIndex]);
 
-  /* Output a message on Hyperterminal using printf function */
-  printf("\n\r UART Printf Example: retarget the C library printf function to the UART\n\r");
-  printf("** Test finished successfully. ** \n\r");
+	/* Infinite loop */
+	while (1){
+		debounceFSM_update();
+		if (readKey()){
+			if (delayIndex+1 < sizeof(TIEMPOS) / sizeof(TIEMPOS[0])){
+				delayIndex++;
+			}else{
+				delayIndex=0;
+			}
+			delayWrite(&ledDelay, TIEMPOS[delayIndex]);
+		}
 
-  /* Infinite loop */
-  while (1)
-  {
-	  BSP_LED_Toggle(LED3);
-	  HAL_Delay(100);
-  }
-}
+	    if (delayRead(&ledDelay)){
+			BSP_LED_Toggle(LED1);
 
-/**
-  * @brief  Retargets the C library printf function to the USART.
-  * @param  None
-  * @retval None
-  */
-PUTCHAR_PROTOTYPE
-{
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the USART3 and Loop until the end of transmission */
-  HAL_UART_Transmit(&UartHandle, (uint8_t *)&ch, 1, 0xFFFF);
+	    }
 
-  return ch;
+	}
 }
 
 /**
@@ -207,26 +183,6 @@ static void Error_Handler(void)
   {
   }
 }
-
-#ifdef  USE_FULL_ASSERT
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t *file, uint32_t line)
-{
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-
-  /* Infinite loop */
-  while (1)
-  {
-  }
-}
-#endif
 
 /**
   * @}
