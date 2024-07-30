@@ -39,7 +39,7 @@
 
 #define MAX_WAIT_UART_TX 500
 
-#define MSG_UART_INIT	"UART iniciada, configuracion: 9600 - 7O1 \n\r"
+#define MSG_UART_INIT	"UART iniciada correctamente, boud rate: 9600 \n\r"
 
 
 /* Variables -----------------------------------------------------------------*/

@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "API_debounce.h"
 #include "API_delay.h"
+#include "API_uart.h"
 
 /* Functions -----------------------------------------------------------------*/
 static void errorHandler(void);
@@ -75,6 +76,7 @@ void debounceFSM_update(){
 				if (!BSP_PB_GetState(BUTTON_USER)){
 					buttonState = BUTTON_UP;
 					buttonPress=false;
+					uartSendString((uint8_t*)"Flanco ascendente detectado \r\n");
 				} else {
 					buttonState = BUTTON_DOWN;
 				}
@@ -85,6 +87,7 @@ void debounceFSM_update(){
 				if (BSP_PB_GetState(BUTTON_USER)){
 					buttonState = BUTTON_DOWN;
 					buttonPress=true;
+					uartSendString((uint8_t*)"Flanco descendente detectado \r\n");
 				} else {
 					buttonState = BUTTON_UP;
 				}
