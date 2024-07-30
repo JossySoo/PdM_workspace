@@ -31,3 +31,10 @@ Se implementa un módulo de software en un archivo fuente API_debounce.c con su 
 Se crea dentro del módulo una función readKey que lee una variable interna del módulo y devuelve true o false si la tecla fue presionada.
 
 Se implementa un programa que cambie la frecuencia de parpadeo del LED entre 100 ms y 500 ms cada vez que se presione la tecla.  El programa usa las funciones anti-rebote del módulo API_debounce y los retardos no bloqueantes del módulo API_delay y la función readKey.
+
+## Practica 5
+
+Se implementa un módulo de software en un archivos fuente API_uart.c con su correspondiente archivo de cabecera API_uart.h. Este módulo es un wrapper de la HAL que permite trabajar con la UART.
+
+Se utiliza este módulo nuevo para enviar un mensaje al usuario cuando se producen los flancos ascendentes y descendentes en el módulo de debounce.
+
