@@ -24,7 +24,7 @@
 #include <string.h>
 
 /* Functions -----------------------------------------------------------------*/
-
+static void errorHandler(void);
 /* Constants and macros --------------------------------------------------------*/
 #define LEN_TMP_MSG 10
 #define LEN_INIT_MSG 120
@@ -94,11 +94,13 @@ bool_t uartInit (void) {
 void uartSendString (uint8_t* pstring) {
 
 	if (pstring != NULL) {
-
+		//TODO: validar len cuando no hay /0
 		uint16_t len = strlen((const char*)pstring);
-
+		//TODO: agregar validacion del return
 		HAL_UART_Transmit (&uartHandle, pstring, len, MAX_WAIT_UART_TX);
 
+	} else {
+		errorHandler();
 	}
 
 }
@@ -111,11 +113,13 @@ void uartSendString (uint8_t* pstring) {
  * @return None
  */
 void uartSendStringSize (uint8_t* pstring, uint16_t size) {
-
+	//TODO: validar size
 	if (pstring != NULL) {
-
+		//TODO: agregar validacion del return
 		HAL_UART_Transmit (&uartHandle, pstring, size, MAX_WAIT_UART_TX);
 
+	} else {
+		errorHandler();
 	}
 
 }
@@ -128,11 +132,26 @@ void uartSendStringSize (uint8_t* pstring, uint16_t size) {
  * @return None
  */
 void uartReceiveStringSize (uint8_t* pstring, uint16_t size) {
-
+	//TODO: validar size
 	if (pstring != NULL) {
-
+		//TODO: agregar validacion del return
 		HAL_UART_Receive (&uartHandle, (uint8_t*)pstring, size, MAX_WAIT_UART_TX);
 
+	} else {
+		errorHandler();
 	}
 
+}
+
+/**
+ * @brief  This function is executed in case of error occurrence.
+ * @param  None
+ * @retval None
+ */
+static void errorHandler(void){
+	/* Turn LED2 on */
+	BSP_LED_On(LED2);
+	while (1)
+	{
+	}
 }
