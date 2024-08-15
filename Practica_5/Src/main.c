@@ -76,7 +76,7 @@ int main(void)
 
 	BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
 	debounceFSM_init();
-
+	uartInit ();
 	delayIndex = 0;
 
 	/* Initialize delays */
