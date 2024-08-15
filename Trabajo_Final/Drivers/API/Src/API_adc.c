@@ -102,7 +102,10 @@ void adcInit(void) {
  * @retval None
  */
 void adcPollForConversion (void){
-	HAL_ADC_PollForConversion(&adcHandler, HAL_MAX_DELAY);
+    if (HAL_ADC_PollForConversion(&adcHandler, HAL_MAX_DELAY) != HAL_OK) {
+        // Error occurred during ADC polling
+    	errorHandler();
+    }
 }
 
 /**
@@ -112,7 +115,13 @@ void adcPollForConversion (void){
  * @retval uint32_t: The raw ADC conversion value.
  */
 uint32_t adcGetValue (void){
-	return HAL_ADC_GetValue(&adcHandler);
+	uint32_t value = HAL_ADC_GetValue(&adcHandler);
+
+	if (value > 4095 || value <= 0) {
+	        // value should be between 0 and 4095 for a 12-bit ADC
+	    	errorHandler();
+	    }
+	return value;
 }
 
 /**
@@ -123,6 +132,11 @@ uint32_t adcGetValue (void){
  * @retval float: The temperature in degrees Celsius.
  */
 float adcTransformRawValue (uint32_t rawValue) {
+
+    if (rawValue > 4095 || rawValue <= 0) {
+        // rawValue should be between 0 and 4095 for a 12-bit ADC
+    	errorHandler();
+    }
 	float temp;
 
 	temp = ((float) rawValue) / 4095 * INTERNAL_TEMPSENSOR_V25_VREF;

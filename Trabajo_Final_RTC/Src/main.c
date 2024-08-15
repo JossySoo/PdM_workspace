@@ -77,10 +77,6 @@ int main(void) {
 	/* Infinite loop */
 	while (1) {
 		temperatureFSM_update();
-		debounceFSM_update();
-		if (debounceFSM_readKey()){
-			temperatureFSM_forceMeasurement();
-		}
 
 	}
 }
