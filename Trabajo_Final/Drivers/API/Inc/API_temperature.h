@@ -18,8 +18,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef API_DEBOUNCE_H
-#define API_DEBOUNCE_H
+#ifndef API_TEMPERATURE_H
+#define API_TEMPERATURE_H
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
@@ -43,22 +43,15 @@
  * @brief  Set the initial state of the state machine.
  * @retval None
  */
-void debounceFSM_init();
+void temperatureFSM_init();
 
 /**
  * @brief  Check the button state and update the state machine status.
  * @retval None
  */
-void debounceFSM_update();
-
-/**
- * @brief  Check the button state and return true or false if the key was pressed.
- * 			If it returns true, it should reset (set to false) the buttonPress variable.
- * @retval bool timeOut, indicates if the key was pressed.
- */
-bool_t readKey();
+void temperatureFSM_update();
 
 
-#endif /* API_DEBOUNCE_H */
+#endif /* API_TEMPERATURE_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

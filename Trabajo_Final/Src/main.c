@@ -20,6 +20,7 @@
 #include "API_debounce.h"
 #include "API_uart.h"
 #include "API_adc.h"
+#include "API_temperature.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -68,32 +69,11 @@ int main(void) {
 	BSP_LED_Init(LED2);
 	BSP_LED_Init(LED3);
 
-	/* Initialize all configured peripherals */
-	uartInit();
-
-	MX_ADC1_Init();
-
+	temperatureFSM_init();
 
 	/* Infinite loop */
 	while (1) {
-		char msg[50];
-		uint16_t rawValue;
-		float temp;
-
-		adcPollForConversion();
-
-		rawValue = adcGetValue ();
-		temp = adcTransformRawValue(rawValue);
-
-		sprintf(msg, "rawValue: %hu\r\n", rawValue);
-		uartSendString((uint8_t*) msg);
-
-		// Limitar la precisión a 2 decimales
-		sprintf(msg, "Temperature (C): %.2f\r\n", temp);
-		uartSendString((uint8_t*) msg);
-
-		BSP_LED_Toggle(LED3);
-		HAL_Delay(6000);
+		temperatureFSM_update();
 	}
 }
 
