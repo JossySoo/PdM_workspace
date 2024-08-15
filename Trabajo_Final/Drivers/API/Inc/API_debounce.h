@@ -43,20 +43,20 @@
  * @brief  Set the initial state of the state machine.
  * @retval None
  */
-void debounceFSM_init();
+void debounceFSM_init(void);
 
 /**
  * @brief  Check the button state and update the state machine status.
  * @retval None
  */
-void debounceFSM_update();
+void debounceFSM_update(void);
 
 /**
  * @brief  Check the button state and return true or false if the key was pressed.
  * 			If it returns true, it should reset (set to false) the buttonPress variable.
  * @retval bool timeOut, indicates if the key was pressed.
  */
-bool_t readKey();
+bool_t debounceFSM_readKey(void);
 
 
 #endif /* API_DEBOUNCE_H */

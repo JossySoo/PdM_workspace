@@ -43,13 +43,19 @@
  * @brief  Set the initial state of the state machine.
  * @retval None
  */
-void temperatureFSM_init();
+void temperatureFSM_init(void);
 
 /**
  * @brief  Check the button state and update the state machine status.
  * @retval None
  */
-void temperatureFSM_update();
+void temperatureFSM_update(void);
+
+/**
+ * @brief  Forces the START_MEASUREMENTS state.
+ * @retval None
+ */
+void temperatureFSM_forceMeasurement(void);
 
 
 #endif /* API_TEMPERATURE_H */

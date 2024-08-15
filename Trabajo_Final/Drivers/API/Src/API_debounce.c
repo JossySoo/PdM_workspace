@@ -46,8 +46,9 @@ static bool_t buttonPress;
  * @brief  Set the initial state of the state machine.
  * @retval None
  */
-void debounceFSM_init(){
+void debounceFSM_init(void){
 	buttonState = BUTTON_UP;
+	BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
 	/* Declare delays and load durations */
 	delayInit(&d1, VALID_BUTTON_TIME);
 	buttonPress=false;
@@ -57,7 +58,7 @@ void debounceFSM_init(){
  * @brief  Check the button state and update the state machine status.
  * @retval None
  */
-void debounceFSM_update(){
+void debounceFSM_update(void){
 	switch(buttonState){
 		case BUTTON_UP:
 			if (BSP_PB_GetState(BUTTON_USER)){
@@ -105,7 +106,7 @@ void debounceFSM_update(){
  * @retval bool timeOut, indicates if the key was pressed.
  */
 
-bool_t readKey(){
+bool_t debounceFSM_readKey(void){
 	if (buttonPress){
 		buttonPress=false;
 		return true;

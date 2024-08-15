@@ -69,26 +69,21 @@ int main(void) {
 	BSP_LED_Init(LED2);
 	BSP_LED_Init(LED3);
 
+	/* Initialize required modules*/
+	debounceFSM_init();
 	temperatureFSM_init();
+	debounceFSM_init();
 
 	/* Infinite loop */
 	while (1) {
 		temperatureFSM_update();
+		debounceFSM_update();
+		if (debounceFSM_readKey()){
+			temperatureFSM_forceMeasurement();
+		}
+
 	}
 }
-
-/**
- * @brief  Retargets the C library printf function to the USART.
- * @param  None
- * @retval None
- */
-/*
-PUTCHAR_PROTOTYPE {
-	HAL_UART_Transmit(&uartHandle, (uint8_t*) &ch, 1, 0xFFFF);
-
-	return ch;
-}
-*/
 
 /**
  * @brief  System Clock Configuration

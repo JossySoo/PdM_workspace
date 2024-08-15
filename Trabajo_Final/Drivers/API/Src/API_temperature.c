@@ -52,7 +52,7 @@ static float temp;
  * @brief  Set the initial state of the state machine.
  * @retval None
  */
-void temperatureFSM_init(){
+void temperatureFSM_init(void){
 	measurementState = START_MEASUREMENTS;
 	countMeasurements=0;
 	temperatureAccum = 0;
@@ -68,7 +68,7 @@ void temperatureFSM_init(){
  * @brief  Check the button state and update the state machine status.
  * @retval None
  */
-void temperatureFSM_update(){
+void temperatureFSM_update(void){
 	switch(measurementState){
 		case START_MEASUREMENTS:
 			countMeasurements=0;
@@ -85,7 +85,7 @@ void temperatureFSM_update(){
 				sprintf(msg, "rawValue: %hu\r\n", rawValue);
 				uartSendString((uint8_t*) msg);
 
-				// Limitar la precisión a 2 decimales
+				// Formato a 2 decimales
 				sprintf(msg, "Temperature (C): %.2f\r\n", temp);
 				uartSendString((uint8_t*) msg);
 
@@ -121,6 +121,13 @@ void temperatureFSM_update(){
 	}
 }
 
+/**
+ * @brief  Forces the START_MEASUREMENTS state.
+ * @retval None
+ */
+void temperatureFSM_forceMeasurement(void){
+	measurementState = START_MEASUREMENTS;
+}
 
 
 /**
