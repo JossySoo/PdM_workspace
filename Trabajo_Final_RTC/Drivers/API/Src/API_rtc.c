@@ -133,7 +133,8 @@ void enterLowPowerMode(void) {
     HAL_SuspendTick();
 
     uartSendString((uint8_t*)"Entering stop mode ...\r\n");
-    // Entra en Stop Mode (modo de bajo consumo)
+    /* Entra en Stop Mode. Se elige el parámetro PWR_LOWPOWERREGULATOR_ON para poder ahorrar
+    energía en un periodo en donde no es necesario tomar mediciones */
     HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFE);
 
     // Restaurar la configuración del reloj del sistema después de despertar

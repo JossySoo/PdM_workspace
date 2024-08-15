@@ -39,9 +39,37 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-void MX_ADC1_Init(void);
+/**
+ * @brief  Initializes the ADC peripheral with the specified settings.
+ *         Configures the ADC clock, resolution, data alignment, and conversion modes.
+ * @param  None
+ * @retval None
+ */
+void adcInit(void);
+
+/**
+ * @brief  Polls the ADC for the completion of the conversion.
+ *         This function waits until the ADC conversion is complete.
+ * @param  None
+ * @retval None
+ */
 void adcPollForConversion (void);
+
+/**
+ * @brief  Retrieves the value of the last ADC conversion.
+ *         Returns the raw digital value from the ADC conversion.
+ * @param  None
+ * @retval uint32_t: The raw ADC conversion value.
+ */
 uint32_t adcGetValue (void);
+
+/**
+ * @brief  Transforms the raw ADC value to a temperature value in degrees Celsius.
+ *         Converts the raw digital value into a temperature based on the internal
+ *         temperature sensor calibration data.
+ * @param  rawValue: The raw ADC conversion value.
+ * @retval float: The temperature in degrees Celsius.
+ */
 float adcTransformRawValue (uint32_t rawValue);
 
 

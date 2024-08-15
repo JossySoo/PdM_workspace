@@ -60,7 +60,7 @@ void temperatureFSM_init(void){
 	delayInit(&d1, WATING_TIME);
 	/* Initialize all configured peripherals */
 	uartInit();
-	MX_ADC1_Init();
+	adcInit();
 	BSP_LED_Init(LED1);
 }
 

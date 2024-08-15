@@ -50,12 +50,13 @@ static ADC_HandleTypeDef adcHandler;
 
 /* Functions Definitions ------------------------------------------------------*/
 
-/* ADC1 init function */
 /**
- * @brief  ADC1 init function.
+ * @brief  Initializes the ADC peripheral with the specified settings.
+ *         Configures the ADC clock, resolution, data alignment, and conversion modes.
+ * @param  None
  * @retval None
  */
-void MX_ADC1_Init(void) {
+void adcInit(void) {
 	ADC_ChannelConfTypeDef sConfig;
 
 	/* Enable ADC peripheral */
@@ -73,26 +74,54 @@ void MX_ADC1_Init(void) {
 	adcHandler.Init.NbrOfConversion = 1;
 	adcHandler.Init.DMAContinuousRequests = DISABLE;
 	adcHandler.Init.EOCSelection = ADC_EOC_SEQ_CONV;
-	HAL_ADC_Init(&adcHandler);
+	if (HAL_ADC_Init(&adcHandler) != HAL_OK) {
+		// Error occurred during ADC initialization
+		errorHandler();
+	}
 
 	/**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	 */
 	sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
 	sConfig.Rank = 1;
 	sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
-	HAL_ADC_ConfigChannel(&adcHandler, &sConfig);
+    if (HAL_ADC_ConfigChannel(&adcHandler, &sConfig) != HAL_OK) {
+        // Error occurred during ADC channel configuration
+    	errorHandler();
+    }
 
-	HAL_ADC_Start(&adcHandler);
+    if (HAL_ADC_Start(&adcHandler) != HAL_OK) {
+        // Error occurred during ADC start
+    	errorHandler();
+    }
 }
 
+/**
+ * @brief  Polls the ADC for the completion of the conversion.
+ *         This function waits until the ADC conversion is complete.
+ * @param  None
+ * @retval None
+ */
 void adcPollForConversion (void){
 	HAL_ADC_PollForConversion(&adcHandler, HAL_MAX_DELAY);
 }
 
+/**
+ * @brief  Retrieves the value of the last ADC conversion.
+ *         Returns the raw digital value from the ADC conversion.
+ * @param  None
+ * @retval uint32_t: The raw ADC conversion value.
+ */
 uint32_t adcGetValue (void){
 	return HAL_ADC_GetValue(&adcHandler);
 }
 
+/**
+ * @brief  Transforms the raw ADC value to a temperature value in degrees Celsius.
+ *         Converts the raw digital value into a temperature based on the internal
+ *         temperature sensor calibration data.
+ * @param  rawValue: The raw ADC conversion value.
+ * @retval float: The temperature in degrees Celsius.
+ */
 float adcTransformRawValue (uint32_t rawValue) {
 	float temp;
 
@@ -109,6 +138,7 @@ float adcTransformRawValue (uint32_t rawValue) {
  */
 static void errorHandler(void){
 	/* Turn LED2 on */
+	uartSendString((uint8_t*)"Adc error \r\n");
 	BSP_LED_On(LED2);
 	while (1)
 	{
