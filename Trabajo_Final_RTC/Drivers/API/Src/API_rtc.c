@@ -56,10 +56,10 @@ void RTC_Init(void) {
     RCC_OscInitStruct.LSEState = RCC_LSE_ON;
 
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        	uartSendString((uint8_t*)"Error en RCC_OscConfig\r\n");
+        	uartSendString((uint8_t*)"Error in RCC_OscConfig\r\n");
         	errorHandler();
     } else {
-        	uartSendString((uint8_t*)"RCC_OscConfig correcto\r\n");
+        	uartSendString((uint8_t*)"RCC_OscConfig OK\r\n");
     }
 
     // Selecciona LSE como fuente de reloj para el RTC
@@ -69,10 +69,10 @@ void RTC_Init(void) {
     PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
 
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK) {
-        	uartSendString((uint8_t*)"Error en RCCEx_PeriphCLKConfig\r\n");
+        	uartSendString((uint8_t*)"Error in RCCEx_PeriphCLKConfig\r\n");
         	errorHandler();
     } else {
-        	uartSendString((uint8_t*)"RCCEx_PeriphCLKConfig correcto\r\n");
+        	uartSendString((uint8_t*)"RCCEx_PeriphCLKConfig OK\r\n");
     }
 
     // Permite el acceso a los registros del RTC
@@ -99,8 +99,15 @@ void RTC_WakeUpConfig(uint32_t wakeUpTimeInMs) {
         return;
     }
 
-	// Esperar a que el Wake-Up Timer esté listo para ser configurado
+	/* Esperar a que el Wake-Up Timer esté listo para ser configurado, ya que puede tomar unos milisegundos
+    y generar error al configurarlo posteriormente.*/
+    uint32_t timeout = HAL_GetTick() + 1000; // 1 segundo de timeout
 	while (__HAL_RTC_WAKEUPTIMER_GET_FLAG(&hrtc, RTC_FLAG_WUTWF) == RESET) {
+		if (HAL_GetTick() >= timeout) {
+			uartSendString((uint8_t*)"Error: Timeout waiting for Wake-Up Timer to be ready\r\n");
+			errorHandler();
+			return;
+		}
 	}
 	//uartSendString((uint8_t*)"Wake-Up Timer listo\r\n");
 
@@ -135,7 +142,7 @@ void enterLowPowerMode(void) {
     // Reanudar el tick del sistema
     HAL_ResumeTick();
 
-    uartSendString((uint8_t*)"Se restaura reloj\r\n");
+    uartSendString((uint8_t*)"System clock reconfigured\r\n");
 }
 
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
